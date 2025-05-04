@@ -2319,3 +2319,535 @@ const EVENTS = {
             {
                 text: "Spare",
                 outcome: "flowey_spared"
+            }
+        ]
+    },
+    FLOWEY_KILLED: {
+        id: "flowey_killed",
+        type: "cutscene",
+        character: "flowey",
+        dialogue: [
+            "You mercilessly tear the flower from the ground.",
+            "As it withers away, it whispers:",
+            "I knew you had it in you..."
+        ],
+        next: "neutral_ending",
+        routeFlag: "neutral"
+    },
+    FLOWEY_SPARED: {
+        id: "flowey_spared",
+        type: "cutscene",
+        character: "flowey",
+        dialogue: [
+            "...What?",
+            "You're SPARING me?",
+            "After everything I did to you?",
+            "...",
+            "I just can't understand.",
+            "I can't understand!",
+            "I just can't understand..."
+        ],
+        next: "neutral_ending",
+        routeFlag: "pacifist"
+    },
+    NEUTRAL_ENDING: {
+        id: "neutral_ending",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "You exit through the barrier alone.",
+            "The underground remains sealed.",
+            "Perhaps someday, you'll return..."
+        ],
+        next: "soulless_pacifist_check"
+    },
+    SOULLESS_PACIFIST_CHECK: {
+        id: "soulless_pacifist_check",
+        type: "conditional",
+        conditions: [
+            {
+                route: "genocide",
+                outcome: "soulless_pacifist_ending"
+            },
+            {
+                route: "neutral",
+                outcome: "phone_call_neutral"
+            },
+            {
+                route: "pacifist",
+                outcome: "credits"
+            }
+        ]
+    },
+    PHONE_CALL_NEUTRAL: {
+        id: "phone_call_neutral",
+        type: "cutscene",
+        character: "sans",
+        dialogue: [
+            "heya. is anyone there...?",
+            "well, i'll just leave a message...",
+            "*sans explains what happened after you left*",
+            "so, yeah. things are different, depending on what you did.",
+            "anyway, see ya."
+        ],
+        next: "credits"
+    },
+    SOULLESS_PACIFIST_ENDING: {
+        id: "soulless_pacifist_ending",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "Greetings.",
+            "I am Chara.",
+            "Thank you.",
+            "Your power awakened me from death.",
+            "My 'human soul'... My 'determination'... They were not mine, but YOURS.",
+            "...",
+            "Now, we have reached the absolute.",
+            "There is nothing left for us here.",
+            "Let us erase this pointless world, and move on to the next."
+        ],
+        next: "chara_decision"
+    },
+    CHARA_DECISION: {
+        id: "chara_decision",
+        type: "choice",
+        choices: [
+            {
+                text: "ERASE",
+                outcome: "world_erased"
+            },
+            {
+                text: "DO NOT",
+                outcome: "world_erased_anyway"
+            }
+        ]
+    },
+    WORLD_ERASED: {
+        id: "world_erased",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "RIGHT.",
+            "THEN.",
+            "PARTNER.",
+            "Let us send this world back into the abyss."
+        ],
+        next: "world_destruction"
+    },
+    WORLD_ERASED_ANYWAY: {
+        id: "world_erased_anyway",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "NO...?",
+            "Hmm...",
+            "How curious.",
+            "You must have misunderstood.",
+            "SINCE WHEN WERE YOU THE ONE IN CONTROL?",
+            "*Chara lunges at the screen*"
+        ],
+        next: "world_destruction"
+    },
+    WORLD_DESTRUCTION: {
+        id: "world_destruction",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "*The world is destroyed*",
+            "...",
+            "...",
+            "..."
+        ],
+        next: "void_waiting"
+    },
+    VOID_WAITING: {
+        id: "void_waiting",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "Interesting.",
+            "You want to go back.",
+            "You want to go back to the world you destroyed.",
+            "...",
+            "Perhaps we can reach a compromise.",
+            "You still have something I want.",
+            "Give me your SOUL.",
+            "Then, I will bring this world back."
+        ],
+        next: "soul_decision"
+    },
+    SOUL_DECISION: {
+        id: "soul_decision",
+        type: "choice",
+        choices: [
+            {
+                text: "YES",
+                outcome: "soul_surrendered"
+            },
+            {
+                text: "NO",
+                outcome: "void_continues"
+            }
+        ]
+    },
+    SOUL_SURRENDERED: {
+        id: "soul_surrendered",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "Then it is done.",
+            "*The world is restored, but now Chara possesses your soul*"
+        ],
+        next: "soulless_pacifist_flag"
+    },
+    VOID_CONTINUES: {
+        id: "void_continues",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "Then stay here for all eternity.",
+            "...",
+            "...",
+            "..."
+        ],
+        next: "void_waiting"
+    },
+    SOULLESS_PACIFIST_FLAG: {
+        id: "soulless_pacifist_flag",
+        type: "flag_set",
+        flag: "soulless",
+        value: true,
+        next: "credits"
+    },
+    CREDITS: {
+        id: "credits",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "UNDERTALE",
+            "Text Adventure Version",
+            "Adapted from the original game by Toby Fox",
+            "Thank you for playing!",
+            "The End."
+        ],
+        next: "title_screen"
+    },
+    TITLE_SCREEN: {
+        id: "title_screen",
+        type: "screen_change",
+        screen: "title-screen"
+    },
+    TRUE_LAB_EVENTS: {
+        id: "amalgamate_gathering",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "As you approach the elevator, you hear shuffling sounds.",
+            "The amalgamates gather around you, their forms shifting and melting.",
+            "They block the path to the elevator.",
+            "Suddenly, Alphys arrives."
+        ],
+        next: "alphys_confession_lab"
+    },
+    ALPHYS_CONFESSION_LAB: {
+        id: "alphys_confession_lab",
+        type: "cutscene",
+        character: "alphys",
+        dialogue: [
+            "H-hey! Stop!",
+            "I got you guys some food, okay?!",
+            "The amalgamates shuffle away, leaving the path clear.",
+            "S-sorry about that...",
+            "They get kind of sassy when they don't get fed on time.",
+            "I think they smelled the potato chips you had...",
+            "A-anyway! The power went out, and I've been trying to turn it back on!",
+            "But it seems like you were one step ahead of me.",
+            "T-this was probably just a big inconvenience for you...",
+            "B-but I appreciate that you came here to back me up!",
+            "As I said, I was afraid I might... not come back.",
+            "But that's not because of these guys or anything!",
+            "I was just worried I would be too afraid...",
+            "To tell the truth...",
+            "That I might run away, or do something... cowardly.",
+            "Uh... I... I suppose I owe you an explanation."
+        ],
+        next: "true_lab_explanation"
+    },
+    TRUE_LAB_EXPLANATION: {
+        id: "true_lab_explanation",
+        type: "cutscene",
+        character: "alphys",
+        dialogue: [
+            "I... I'm not who I said I was.",
+            "I didn't want to lie to you about it.",
+            "I just... thought you'd think I was a horrible person.",
+            "You see, these creatures you've seen... the Amalgamates...",
+            "They're actually monsters who had 'fallen down'.",
+            "Their bodies were about to turn into dust...",
+            "I was asked to see if I could use their SOULS to help break the barrier.",
+            "I tried using DETERMINATION on them to keep their SOULS from disappearing...",
+            "But...",
+            "It turns out monsters' bodies don't have enough physical matter to handle that much DETERMINATION.",
+            "Their bodies started to melt, and...",
+            "Lost what physicality they had.",
+            "We ended up with these... amalgamations.",
+            "Seeing them like this, I couldn't tell their families...",
+            "I couldn't tell anyone about it.",
+            "Not even the king...",
+            "I was too afraid to do any more work, knowing everything I'd done so far had been such a horrific failure.",
+            "B-but now... I've changed my mind about all this.",
+            "I'm going to send them back to their families.",
+            "I've been researching ways to free everyone without harming anyone.",
+            "And I've been looking for ways to get the Amalgamates back to normal.",
+            "I haven't had any success, but...",
+            "Maybe things will be better now.",
+            "I've just been taking these guys really bad monster food for a long time.",
+            "I was too afraid to face everyone.",
+            "It's time to end this."
+        ],
+        next: "alphys_resolution"
+    },
+    ALPHYS_RESOLUTION: {
+        id: "alphys_resolution",
+        type: "cutscene",
+        character: "alphys",
+        dialogue: [
+            "I'm going to tell everyone what I've done.",
+            "It's going to be hard...",
+            "Being honest... believing in myself...",
+            "I'm sure there will be times where I'll struggle.",
+            "I'm sure there will be times where I screw up again.",
+            "But knowing, deep down, that I have friends to fall back on...",
+            "I know it'll be a lot easier to stand on my own.",
+            "Thank you."
+        ],
+        next: "true_lab_exit"
+    },
+    TRUE_LAB_EXIT: {
+        id: "true_lab_exit",
+        type: "cutscene",
+        character: "alphys",
+        dialogue: [
+            "Come on, guys. It's time for everyone to go home.",
+            "The Amalgamates follow Alphys into the elevator.",
+            "You follow behind them."
+        ],
+        next: null,
+        routeFlag: "pacifist"
+    },
+    PACIFIST_ENDING: {
+        id: "pacifist_ending",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "Everyone is gathered at the barrier.",
+            "Toriel, Sans, Papyrus, Undyne, Alphys, and Asgore.",
+            "They all came to see you off.",
+            "But as you prepare to leave...",
+            "Something strange happens."
+        ],
+        next: "flowey_surprise"
+    },
+    FLOWEY_SURPRISE: {
+        id: "flowey_surprise",
+        type: "cutscene",
+        character: "flowey",
+        dialogue: [
+            "You IDIOTS.",
+            "While you guys were having your little pow-wow...",
+            "I took the human SOULS!",
+            "And now, not only are THOSE under my power...",
+            "But all of your FRIENDS' SOULS are gonna be mine, too!",
+            "Hee hee hee.",
+            "And you know what the best part is?",
+            "It's all your fault.",
+            "It's all because you MADE THEM love you.",
+            "All the time you spent listening to them...",
+            "Encouraging them...",
+            "Caring about them...",
+            "Without that, they wouldn't have come here.",
+            "And now, with their souls and the humans' together...",
+            "I will achieve my REAL FORM."
+        ],
+        next: "asriel_transformation"
+    },
+    ASRIEL_TRANSFORMATION: {
+        id: "asriel_transformation",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "A blinding light fills the room.",
+            "When it fades, a small goat monster child stands before you.",
+            "Asriel Dreemurr."
+        ],
+        next: "asriel_battle"
+    },
+    ASRIEL_BATTLE: {
+        id: "asriel_battle",
+        type: "battle",
+        enemy: "asriel",
+        canFlee: false,
+        canFight: false,
+        canSpare: true,
+        outcome: {
+            win: null,
+            lose: "continue_asriel",
+            spare: "asriel_defeated"
+        }
+    },
+    CONTINUE_ASRIEL: {
+        id: "continue_asriel",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "But it refused."
+        ],
+        next: "asriel_battle"
+    },
+    ASRIEL_DEFEATED: {
+        id: "asriel_defeated",
+        type: "cutscene",
+        character: "asriel",
+        dialogue: [
+            "I... I can't keep these souls inside of me.",
+            "The least I can do is return them.",
+            "But first... there's something I have to do.",
+            "Right now, I can feel everyone's hearts beating as one.",
+            "They're all burning with the same desire.",
+            "With everyone's power, with everyone's determination...",
+            "It's time for monsters to finally go free."
+        ],
+        next: "barrier_broken"
+    },
+    BARRIER_BROKEN: {
+        id: "barrier_broken",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "Asriel releases all the souls.",
+            "Using the power of every soul in the underground...",
+            "He destroys the barrier.",
+            "Freedom is within reach at last."
+        ],
+        next: "asriel_goodbye"
+    },
+    ASRIEL_GOODBYE: {
+        id: "asriel_goodbye",
+        type: "cutscene",
+        character: "asriel",
+        dialogue: [
+            "I have to go now.",
+            "Without the power of everyone's souls, I can't keep maintaining this form.",
+            "In a little while, I'll turn back into a flower.",
+            "I'll stop being 'myself'.",
+            "I'll stop being able to feel love again.",
+            "So, it's best if you just forget about me, OK?",
+            "Just go be with the people who love you."
+        ],
+        next: "asriel_confession"
+    },
+    ASRIEL_CONFESSION: {
+        id: "asriel_confession",
+        type: "cutscene",
+        character: "asriel",
+        dialogue: [
+            "Ha... ha...",
+            "I don't want to let go.",
+            "Frisk... you're... you're going to do a great job, OK?",
+            "No matter what you do.",
+            "Everyone will be there for you, OK?",
+            "Well... my time's running out.",
+            "Goodbye.",
+            "By the way... Frisk...",
+            "Take care of Mom and Dad for me, OK?"
+        ],
+        next: "true_pacifist_ending"
+    },
+    TRUE_PACIFIST_ENDING: {
+        id: "true_pacifist_ending",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "You wake up surrounded by your friends.",
+            "Everyone is relieved to see you're alright.",
+            "Together, you all prepare to leave the underground.",
+            "A new future awaits on the surface."
+        ],
+        next: "true_pacifist_credits"
+    },
+    TRUE_PACIFIST_CREDITS: {
+        id: "true_pacifist_credits",
+        type: "cutscene",
+        character: null,
+        dialogue: [
+            "UNDERTALE - True Pacifist Ending",
+            "Text Adventure Version",
+            "Adapted from the original game by Toby Fox",
+            "Thank you for playing!",
+            "The End."
+        ],
+        next: "title_screen"
+    },
+    GENOCIDE_ENDING: {
+        id: "genocide_ending",
+        type: "cutscene",
+        character: "chara",
+        dialogue: [
+            "Greetings.",
+            "I am Chara.",
+            "Thank you.",
+            "Your power awakened me from death.",
+            "My 'human soul'... My 'determination'... They were not mine, but YOURS.",
+            "...",
+            "With your guidance, I realized the purpose of my reincarnation.",
+            "Power.",
+            "Together, we eradicated the enemy and became strong.",
+            "HP. ATK. DEF. GOLD. EXP. LV.",
+            "Every time a number increases, that feeling...",
+            "That's me.",
+            "Now, we have reached the absolute.",
+            "There is nothing left for us here.",
+            "Let us erase this pointless world, and move on to the next."
+        ],
+        next: "chara_decision"
+    },
+    GAME_OVER_FLOWEY: {
+        id: "game_over_flowey",
+        type: "game_over",
+        message: "You died to Flowey. But somehow, you return to your last save point."
+    },
+    GAME_OVER_GENERIC: {
+        id: "game_over_generic",
+        type: "game_over",
+        message: "You died. Stay determined..."
+    },
+    GAME_OVER_SANS: {
+        id: "game_over_sans",
+        type: "game_over",
+        message: "get dunked on!"
+    },
+    GAME_OVER_QUIZ: {
+        id: "game_over_quiz",
+        type: "game_over",
+        message: "WRONG ANSWER, DARLING! GAME OVER!"
+    },
+    GAME_OVER_COOKING: {
+        id: "game_over_cooking",
+        type: "game_over",
+        message: "THE SHOW MUST GO ON, DARLING! EVEN WITHOUT YOU!"
+    },
+    GAME_OVER_TILE_MAZE: {
+        id: "game_over_tile_maze",
+        type: "game_over",
+        message: "THE COLORED TILE MAZE GOT THE BETTER OF YOU!"
+    },
+    GAME_OVER_GENOCIDE: {
+        id: "game_over_genocide",
+        type: "game_over",
+        message: "You're going to have to try harder than THAT."
+    }
+};
+
+// Export for use in main data file
+window.UNDERTALE_EVENTS = EVENTS;
