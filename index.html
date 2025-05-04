@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNDERTALE Text Adventure (by Classic)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Title Screen -->
+        <div id="title-screen" class="screen active">
+            <h1>UNDERTALE</h1>
+            <h2>Text Adventure</h2>
+            <div class="menu-options">
+                <button id="new-game-btn">New Game</button>
+                <button id="load-game-btn">Load Game</button>
+            </div>
+        </div>
+
+        <!-- Character Creation Screen -->
+        <div id="character-creation" class="screen">
+            <h2>Who are you?</h2>
+            <div class="character-form">
+                <div class="form-group">
+                    <label for="character-name">Name:</label>
+                    <input type="text" id="character-name" maxlength="6">
+                </div>
+                <button id="start-game-btn">Begin</button>
+            </div>
+        </div>
+
+        <!-- Load Game Screen -->
+        <div id="load-game" class="screen">
+            <h2>Load Game</h2>
+            <div id="save-slots">
+                <!-- Save slots will be populated dynamically -->
+                <div class="save-slot empty" data-slot="1">
+                    <p>Empty Slot 1</p>
+                </div>
+                <div class="save-slot empty" data-slot="2">
+                    <p>Empty Slot 2</p>
+                </div>
+                <div class="save-slot empty" data-slot="3">
+                    <p>Empty Slot 3</p>
+                </div>
+            </div>
+            <button id="back-to-title-btn">Back</button>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="stats-bar">
+                <div id="player-name">NAME: <span></span></div>
+                <div id="player-lv">LV: <span>1</span></div>
+                <div id="player-hp">HP: <span>20</span> / <span>20</span></div>
+            </div>
+            
+            <div id="game-area">
+                <div id="location-image"></div>
+                <div id="location-name"></div>
+                <div id="game-text"></div>
+            </div>
+            
+            <div id="action-menu">
+                <div id="standard-actions">
+                    <button id="act-btn">ACT</button>
+                    <button id="item-btn">ITEM</button>
+                    <button id="mercy-btn">MERCY</button>
+                    <button id="menu-btn">MENU</button>
+                </div>
+                <div id="input-area">
+                    <input type="text" id="player-input" placeholder="What will you do?">
+                    <button id="submit-action">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Screen -->
+        <div id="battle-screen" class="screen">
+            <div id="battle-stats">
+                <div id="battle-player-name">NAME: <span></span></div>
+                <div id="battle-player-lv">LV: <span>1</span></div>
+                <div id="battle-player-hp">HP: <span>20</span> / <span>20</span></div>
+            </div>
+            
+            <div id="battle-area">
+                <div id="enemy-container">
+                    <div id="enemy-name"></div>
+                    <div id="enemy-image"></div>
+                </div>
+                
+                <div id="battle-text"></div>
+                
+                <div id="battle-box">
+                    <!-- This will contain the soul and bullet patterns -->
+                    <div id="player-soul"></div>
+                </div>
+            </div>
+            
+            <div id="battle-menu">
+                <button id="fight-btn">FIGHT</button>
+                <button id="battle-act-btn">ACT</button>
+                <button id="battle-item-btn">ITEM</button>
+                <button id="spare-btn">MERCY</button>
+            </div>
+            
+            <div id="act-menu" class="submenu">
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <div id="item-menu" class="submenu">
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <div id="mercy-menu" class="submenu">
+                <button id="spare-option">Spare</button>
+                <button id="flee-option">Flee</button>
+            </div>
+        </div>
+
+        <!-- Inventory Screen -->
+        <div id="inventory-screen" class="screen">
+            <h2>INVENTORY</h2>
+            <div id="inventory-slots">
+                <!-- Will be populated dynamically -->
+            </div>
+            <div id="item-details">
+                <h3 id="selected-item-name"></h3>
+                <p id="selected-item-description"></p>
+                <div id="item-actions">
+                    <button id="use-item">USE</button>
+                    <button id="equip-item">EQUIP</button>
+                    <button id="drop-item">DROP</button>
+                </div>
+            </div>
+            <button id="close-inventory">CLOSE</button>
+        </div>
+
+        <!-- Game Menu Screen -->
+        <div id="menu-screen" class="screen">
+            <h2>MENU</h2>
+            <div class="menu-options">
+                <button id="save-game-btn">SAVE</button>
+                <button id="load-menu-btn">LOAD</button>
+                <button id="settings-btn">SETTINGS</button>
+                <button id="return-to-game-btn">RETURN</button>
+                <button id="quit-to-title-btn">QUIT</button>
+            </div>
+        </div>
+        
+        <!-- Save Game Screen -->
+        <div id="save-screen" class="screen">
+            <h2>SAVE GAME</h2>
+            <div id="save-game-slots">
+                <!-- Will be populated dynamically -->
+                <div class="save-slot" data-slot="1">
+                    <p>Slot 1: <span class="save-info"></span></p>
+                </div>
+                <div class="save-slot" data-slot="2">
+                    <p>Slot 2: <span class="save-info"></span></p>
+                </div>
+                <div class="save-slot" data-slot="3">
+                    <p>Slot 3: <span class="save-info"></span></p>
+                </div>
+            </div>
+            <button id="back-to-menu-btn">BACK</button>
+        </div>
+        
+        <!-- Overlay for Save Points -->
+        <div id="save-point-overlay" class="overlay">
+            <div class="save-point-container">
+                <p id="save-location-text"></p>
+                <p>* The sight of the underground fills you with DETERMINATION.</p>
+                <div class="save-options">
+                    <button id="save-game-point">SAVE</button>
+                    <button id="return-game-point">RETURN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+<script src="js/data/areas.js"></script>
+<script src="js/data/characters.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/battles.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/data/shops.js"></script>
+<script src="js/data/puzzles.js"></script>
+<script src="js/data/data.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/inventory.js"></script>
+<script src="js/saveload.js"></script>
+
+</body>
+</html>
