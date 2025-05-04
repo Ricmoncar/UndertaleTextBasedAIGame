@@ -243,3 +243,4 @@ function showEnding(event) {
     // Return to title screen
     showScreen("title-screen");
 }
+

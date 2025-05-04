@@ -724,3 +724,82 @@ body.newhome #location-image {
         padding: 8px 10px;
     }
 }
+
+@font-face {
+    font-family: 'Determination Mono';
+    src: url('fonts/DTM-Mono.otf') format('opentype'),
+         url('fonts/DTM-Mono.ttf') format('truetype'),
+         url('fonts/DeterminationMonoWeb.woff') format('woff'),
+         url('fonts/DeterminationMonoWeb.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Improves text rendering during font load */
+}
+
+/* Add a properly loaded alternative font */
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    font-display: swap;
+}
+
+/* Better font-family stack with multiple fallbacks */
+body {
+    font-family: 'Determination Mono', 'Press Start 2P', 'Courier New', monospace;
+}
+
+/* Fix for webfonts not loading properly */
+.webfont-loaded {
+    /* This class is added by JavaScript when fonts are confirmed loaded */
+    font-family: 'Determination Mono', 'Press Start 2P', monospace;
+}
+
+.webfont-failed {
+    /* This class is added by JavaScript when fonts fail to load */
+    font-family: 'Courier New', monospace !important;
+}
+
+/* Enhanced font loading for different screen elements */
+#game-text, 
+#battle-text, 
+.dialogue-text {
+    /* Elements where font is most important */
+    font-family: 'Determination Mono', 'Press Start 2P', 'Courier New', monospace;
+}
+
+/* Preload directives for fonts to load them earlier */
+head::before {
+    content: '';
+    display: block;
+}
+
+/* Font smoothing improvements */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Simple text display fix */
+#game-text {
+    white-space: pre-wrap !important;
+    overflow-y: auto !important;
+    max-height: 200px !important;
+    padding: 10px !important;
+    line-height: 1.5 !important;
+    clear: both !important;
+    position: static !important;
+}
+
+/* Ensure text is properly stacked vertically */
+#game-text p, 
+#game-text div {
+    display: block !important;
+    position: static !important;
+    margin-bottom: 10px !important;
+}
+
+/* Fix for command display */
+#game-area {
+    display: flex !important;
+    flex-direction: column !important;
+}

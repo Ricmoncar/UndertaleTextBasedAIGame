@@ -6,9 +6,8 @@
     <title>UNDERTALE Text Adventure</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-<!-- Add this to your HTML head section -->
-<link rel="preload" href="fonts/DTM-Mono.otf" as="font" type="font/otf" crossorigin>
-<link rel="preload" href="fonts/DTM-Mono.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="textDisplayFix.css">
+    <!-- Simplify font loading - remove preload links that might cause errors -->
 </head>
 <body>
     <div id="game-container">
@@ -52,7 +51,7 @@
             <button id="back-to-title-btn">Back</button>
         </div>
 
-        <!-- Main Game Screen -->
+        <!-- Main Game Screen - RESTRUCTURED -->
         <div id="game-screen" class="screen">
             <div id="stats-bar">
                 <div id="player-name">NAME: <span></span></div>
@@ -63,7 +62,14 @@
             <div id="game-area">
                 <div id="location-image"></div>
                 <div id="location-name"></div>
-                <div id="game-text"></div>
+                
+                <!-- Restructured text display area -->
+                <div id="game-text-container">
+                    <div id="game-text" class="scrollable-content"></div>
+                </div>
+                
+                <!-- Separate area for command results -->
+                <div id="command-result-area" class="command-display"></div>
             </div>
             
             <div id="action-menu">
@@ -94,7 +100,10 @@
                     <div id="enemy-image"></div>
                 </div>
                 
-                <div id="battle-text"></div>
+                <!-- Use same structure for battle text as for game text -->
+                <div id="battle-text-container">
+                    <div id="battle-text" class="scrollable-content"></div>
+                </div>
                 
                 <div id="battle-box">
                     <!-- This will contain the soul and bullet patterns -->
@@ -182,6 +191,27 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Add new overlay for help text -->
+        <div id="help-overlay" class="overlay">
+            <div class="help-container">
+                <h3>Available Commands</h3>
+                <div id="help-text" class="scrollable-content">
+                    <p>- north, n, up: Move north/up</p>
+                    <p>- south, s, down: Move south/down</p>
+                    <p>- east, e, right: Move east/right</p>
+                    <p>- west, w, left: Move west/left</p>
+                    <p>- forward, f: Move forward</p>
+                    <p>- back, b: Move back</p>
+                    <p>- look, examine: Look around</p>
+                    <p>- inventory, i: Show inventory</p>
+                    <p>- use [item]: Use an item</p>
+                    <p>- talk [character]: Talk to a character</p>
+                    <p>- help: Show this help text</p>
+                </div>
+                <button id="close-help">Close</button>
+            </div>
+        </div>
     </div>
 
     <!-- Footer with AI integration info -->
@@ -192,23 +222,31 @@
     </div>
 
     <!-- Scripts -->
-<!-- Load scripts in the correct order -->
-<script src="js/data/areas.js"></script>
-<script src="js/data/characters.js"></script>
-<script src="js/data/items.js"></script>
-<script src="js/data/battles.js"></script>
-<script src="js/data/events.js"></script>
-<script src="js/data/shops.js"></script>
-<script src="js/data/puzzles.js"></script>
-<script src="js/data.js"></script>
+    <!-- Load scripts in the correct order -->
+    <script src="js/data/areas.js"></script>
+    <script src="js/data/characters.js"></script>
+    <script src="js/data/items.js"></script>
+    <script src="js/data/battles.js"></script>
+    <script src="js/data/events.js"></script>
+    <script src="js/data/shops.js"></script>
+    <script src="js/data/puzzles.js"></script>
+    <script src="js/data.js"></script>
 
-<!-- Load functional files after data is loaded -->
-<script src="js/game.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/inventory.js"></script>
-<script src="js/saveload.js"></script>
-<script src="js/battle.js"></script>
-<script src="js/resourceFallbacks.js"></script>
-<script src="js/textAnimation.js"></script>
+    <!-- Load functional files after data is loaded -->
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/saveload.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/resourceFallbacks.js"></script>
+    <script src="js/textAnimation.js"></script>
+    
+    <!-- Fix Scripts -->
+    <script src="js/fixes/fontLoader.js"></script>
+    <script src="js/fixes/uiFixes.js"></script>
+    <script src="js/fixes/integrationFixes.js"></script>
+    <script src="js/fixes.js"></script>
+    <script src="js/textDisplayFix.js"></script>
+    <script src="js/simpleTextFix.js"></script>
 </body>
 </html>
