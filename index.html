@@ -6,11 +6,14 @@
     <title>UNDERTALE Text Adventure</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<!-- Add this to your HTML head section -->
+<link rel="preload" href="fonts/DTM-Mono.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="fonts/DTM-Mono.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <body>
     <div id="game-container">
         <!-- Title Screen -->
-        <div id="title-screen" class="screen active">
+        <div id="title-screen" class="screen">
             <h1>UNDERTALE</h1>
             <h2>Text Adventure</h2>
             <div class="menu-options">
@@ -189,21 +192,23 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/data/areas.js"></script>
-    <script src="js/data/characters.js"></script>
-    <script src="js/data/items.js"></script>
-    <script src="js/data/battles.js"></script>
-    <script src="js/data/events.js"></script>
-    <script src="js/data/shops.js"></script>
-    <script src="js/data/puzzles.js"></script>
-    <script src="js/data/data.js"></script>
-    <script src="js/textAnimation.js"></script>
-    <script src="js/aiIntegration.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/battle.js"></script>
-    <script src="js/inventory.js"></script>
-    <script src="js/saveload.js"></script>
+<!-- Load scripts in the correct order -->
+<script src="js/data/areas.js"></script>
+<script src="js/data/characters.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/battles.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/data/shops.js"></script>
+<script src="js/data/puzzles.js"></script>
+<script src="js/data.js"></script>
 
+<!-- Load functional files after data is loaded -->
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/inventory.js"></script>
+<script src="js/saveload.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/resourceFallbacks.js"></script>
+<script src="js/textAnimation.js"></script>
 </body>
 </html>

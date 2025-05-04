@@ -152,5 +152,14 @@ function getLocationName(locationId) {
     }
 }
 
+// Handle save point interaction
+function handleSavePoint() {
+    const saveLocationText = document.getElementById("save-location-text").textContent;
+    // Save the game to the current slot
+    saveGame(GameState.saveSlot);
+    appendToGameText(`Game saved at ${saveLocationText}!`);
+    // Hide overlay after saving
+    hideSavePointOverlay();
+}
+
 // Initialize the game when the page loads
-window.addEventListener("load", initGame);

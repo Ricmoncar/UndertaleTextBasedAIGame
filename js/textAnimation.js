@@ -16,12 +16,12 @@ const TextAnimation = {
 function initTextAnimation() {
     // Create sound effect with error handling
     try {
-        TextAnimation.soundEffect = new Audio('sound/text.mp4');
+        TextAnimation.soundEffect = new Audio('sound/text.mp3');
         TextAnimation.soundEffect.volume = 0.3;
         
         // Test if audio can be played
         TextAnimation.soundEffect.addEventListener('error', function() {
-            console.warn("Sound file 'sound/text.mp4' couldn't be loaded. Text animations will be silent.");
+            console.warn("Sound file 'sound/text.mp3' couldn't be loaded. Text animations will be silent.");
             TextAnimation.soundEnabled = false;
         });
     } catch (error) {

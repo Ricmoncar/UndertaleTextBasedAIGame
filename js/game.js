@@ -2,7 +2,32 @@
  * UNDERTALE Text Adventure Game - Core Logic
  * This file contains the main game logic and state management
  */
+// Global error handler
+window.addEventListener('error', function(event) {
+    console.error('Game error:', event.error);
+    // Display error message in game text if possible
+    const gameText = document.getElementById('game-text');
+    if (gameText) {
+        const errorMessage = document.createElement('div');
+        errorMessage.style.color = 'red';
+        errorMessage.textContent = 'An error occurred. Check the browser console for details.';
+        gameText.appendChild(errorMessage);
+    }
+});
 
+// Add a simple try-catch around initGame function
+function initGame() {
+    try {
+        // Attach event listeners to all buttons
+        attachEventListeners();
+        
+        // Show title screen
+        showScreen("title-screen");
+    } catch (error) {
+        console.error('Error initializing game:', error);
+        alert('Error starting game: ' + error.message);
+    }
+}
 // Game state - stores all player and game data
 const GameState = {
     player: {
@@ -99,11 +124,20 @@ function attachEventListeners() {
 }
 
 // Show a specific screen and hide all others
+// Show a specific screen and hide all others
 function showScreen(screenId) {
+    // First hide all screens
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
     });
-    document.getElementById(screenId).classList.add("active");
+    
+    // Then show only the requested screen
+    const screenToShow = document.getElementById(screenId);
+    if (screenToShow) {
+        screenToShow.classList.add("active");
+    } else {
+        console.error(`Screen ${screenId} not found`);
+    }
 }
 
 // Show character creation screen
@@ -223,5 +257,7 @@ function startGame() {
     GameState.startTime = Date.now();
     GameState.playTimeInterval = setInterval(updatePlayTime, 1000);
 }
-
+// In game.js, at the end of the file
+// Initialize the game when the page loads
+window.addEventListener("load", initGame);
 // Load rest of the implementation in the respective files

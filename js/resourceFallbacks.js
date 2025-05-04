@@ -158,6 +158,8 @@ const ResourceFallbacks = {
         }
     },
     
+
+    
     // Initialize all fallbacks
     init: function() {
         this.setupFontFallback();
@@ -186,6 +188,8 @@ const ResourceFallbacks = {
         });
     }
 };
+
+
 
 // Initialize fallbacks when the page is ready
 if (document.readyState === 'complete' || document.readyState === 'interactive') {

@@ -1,7 +1,7 @@
-/* Base Styles */
 @font-face {
     font-family: 'Determination Mono';
-    src: url('fonts/DeterminationMonoWeb.woff2') format('woff2');
+    src: url('fonts/DTM-Mono.otf') format('opentype'),
+         url('fonts/DTM-Mono.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -692,5 +692,35 @@ body.newhome #location-image {
     
     #title-screen h2 {
         font-size: 16px;
+    }
+
+    #standard-actions {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    #standard-actions button {
+        width: 100%;
+        white-space: nowrap;
+        font-size: 14px;
+        padding: 8px 5px;
+    }
+
+    #input-area {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    #player-input {
+        flex: 1;
+        min-width: 0; /* Allows the input to shrink */
+    }
+
+    #submit-action {
+        flex-shrink: 0;
+        padding: 8px 10px;
     }
 }
