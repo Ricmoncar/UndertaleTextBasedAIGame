@@ -12,6 +12,10 @@
             font-family: monospace;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         
         #loading-screen {
@@ -25,6 +29,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            text-align: center;
         }
         
         #loading-bar {
@@ -139,13 +144,19 @@
         function updateLoadingProgress() {
             assetsLoaded++;
             const progress = (assetsLoaded / totalAssets) * 100;
-            document.getElementById('loading-progress').style.width = `${progress}%`;
+            const progressBar = document.getElementById('loading-progress');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
             
             if (assetsLoaded >= totalAssets) {
                 // All assets loaded
                 setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('api-key-container').style.display = 'flex';
+                    const loadingScreen = document.getElementById('loading-screen');
+                    const apiKeyContainer = document.getElementById('api-key-container');
+                    
+                    if (loadingScreen) loadingScreen.style.display = 'none';
+                    if (apiKeyContainer) apiKeyContainer.style.display = 'flex';
                 }, 500);
             }
         }
@@ -153,7 +164,7 @@
         // Mark HTML as loaded
         updateLoadingProgress();
         
-        // Mark CSS as loaded
+        // Mark CSS as loaded when it completes loading
         document.querySelector('link').onload = updateLoadingProgress;
         
         // Create placeholders for Undertale data objects
@@ -164,6 +175,22 @@
         window.UNDERTALE_PUZZLES = {};
         window.UNDERTALE_SHOPS = {};
         window.UNDERTALE_BULLET_PATTERNS = {};
+        
+        // Let's track script loading to ensure progress bar works
+        function trackScriptLoading() {
+            const scripts = document.querySelectorAll('script');
+            scripts.forEach(script => {
+                if (script.src && !script.hasAttribute('data-loaded')) {
+                    script.onload = function() {
+                        script.setAttribute('data-loaded', 'true');
+                        updateLoadingProgress();
+                    };
+                }
+            });
+        }
+        
+        // Call after a short delay to ensure all scripts are in the DOM
+        setTimeout(trackScriptLoading, 100);
     </script>
     
 <!-- Load data files first -->

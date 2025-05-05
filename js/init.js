@@ -31,8 +31,8 @@ let apiHandler = null;
 let textSound = null;
 let backgroundMusic = null;
 
-// Game initialization
-document.addEventListener('DOMContentLoaded', initGame);
+// REMOVED: document.addEventListener('DOMContentLoaded', initGame);
+// This event listener is already defined in game-logic.js
 
 /**
  * Initialize the game
@@ -445,13 +445,51 @@ function playMusic(src) {
     // Stop any currently playing music
     if (backgroundMusic) {
         backgroundMusic.pause();
+        backgroundMusic = null;
     }
     
     // Create new audio element
     backgroundMusic = new Audio(src);
     backgroundMusic.loop = true;
     backgroundMusic.volume = 0.5;
-    backgroundMusic.play().catch(e => console.error("Audio play error:", e));
+    
+    // Play with error handling
+    backgroundMusic.play().catch(e => {
+        console.error("Audio play error:", e);
+        // If autoplay is blocked, add a play button
+        if (e.name === "NotAllowedError") {
+            showPlayButton(backgroundMusic);
+        }
+    });
+}
+
+/**
+ * Show a play button when autoplay is blocked
+ */
+function showPlayButton(audio) {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.top = '10px';
+    container.style.right = '10px';
+    container.style.zIndex = '9999';
+    
+    const button = document.createElement('button');
+    button.textContent = 'Play Music';
+    button.style.padding = '10px';
+    button.style.cursor = 'pointer';
+    
+    button.addEventListener('click', () => {
+        if (audio) {
+            audio.play()
+                .then(() => {
+                    container.remove();
+                })
+                .catch(e => console.error("Still can't play audio:", e));
+        }
+    });
+    
+    container.appendChild(button);
+    document.body.appendChild(container);
 }
 
 /**
@@ -521,9 +559,6 @@ async function loadGameData() {
     }
   }
   
-  // Make sure it's globally available
-  window.loadGameData = loadGameData;
-
 // Expose functions to window scope
 window.loadGameData = loadGameData;
 window.gameData = gameData;

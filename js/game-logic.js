@@ -2,6 +2,8 @@
  * UNDERTALE Text Adventure Game - Main Game Logic
  * This file contains the core implementation of the game mechanisms
  */
+let lastSeparatorTime = 0;
+const SEPARATOR_COOLDOWN = 1000; 
 
 // Check if gameState already exists, don't redeclare if it does
 if (typeof gameState === 'undefined') {
@@ -67,6 +69,20 @@ async function startGameWithAPI() {
     }
     
     document.getElementById('loading-indicator').style.display = 'none';
+}
+
+function displaySeparator() {
+    const now = Date.now();
+    
+    // Prevent repeated displays of separators
+    if (now - lastSeparatorTime < SEPARATOR_COOLDOWN) {
+        return;
+    }
+    
+    lastSeparatorTime = now;
+    
+    // Use a shorter separator with less repetition
+    typeText("\n* ---------------------- *\n");
 }
 
 // Start the game experience
@@ -157,7 +173,13 @@ function typeText(text, callback) {
     let i = 0;
     const interval = setInterval(() => {
         if (i < text.length) {
-            textContainer.innerHTML += text.charAt(i);
+            // Replace newline characters with <br> tags
+            if (text.charAt(i) === '\n') {
+                textContainer.innerHTML += '<br>';
+            } else {
+                textContainer.innerHTML += text.charAt(i);
+            }
+            
             textContainer.scrollTop = textContainer.scrollHeight;
             
             // Play sound effect for characters (not spaces or line breaks)
@@ -1038,15 +1060,56 @@ function playMusic(src) {
     // Stop any currently playing music
     if (window.currentMusic) {
         window.currentMusic.pause();
+        window.currentMusic = null;
     }
     
     // Create new audio element
     const music = new Audio(src);
     music.loop = true;
     music.volume = 0.5;
-    music.play().catch(e => console.error("Audio play error:", e));
     
-    window.currentMusic = music;
+    // Play music with error handling
+    try {
+        music.play()
+            .catch(e => {
+                console.error("Audio play error:", e);
+                // If autoplay is blocked, add a play button
+                if (e.name === "NotAllowedError") {
+                    showPlayButton();
+                }
+            });
+        
+        window.currentMusic = music;
+    } catch (e) {
+        console.error("Error creating audio:", e);
+    }
+}
+
+// Helper function to show a play button if autoplay is blocked
+function showPlayButton() {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.top = '10px';
+    container.style.right = '10px';
+    container.style.zIndex = '9999';
+    
+    const button = document.createElement('button');
+    button.textContent = 'Play Music';
+    button.style.padding = '10px';
+    button.style.cursor = 'pointer';
+    
+    button.addEventListener('click', () => {
+        if (window.currentMusic) {
+            window.currentMusic.play()
+                .then(() => {
+                    container.remove();
+                })
+                .catch(e => console.error("Still can't play audio:", e));
+        }
+    });
+    
+    container.appendChild(button);
+    document.body.appendChild(container);
 }
 
 // Play sound effect
