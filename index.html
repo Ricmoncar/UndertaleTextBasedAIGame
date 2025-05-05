@@ -5,207 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNDERTALE Text Adventure</title>
     <style>
-        /* Basic styling until CSS loads */
+        /* Define the custom font */
+        @font-face {
+            font-family: 'DTM-Mono';
+            src: url('css/fonts/DTM-Mono.otf') format('opentype'),
+                 url('css/fonts/DTM-Mono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            background-color: black;
-            color: white;
-            font-family: monospace;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background-color: black;
+            color: white;
+            font-family: 'DTM-Mono', monospace;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 800px;
+            max-width: 95vw;
+        }
+        canvas {
+             display: block;
+             margin: 0 auto;
+        }
+        #loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
+            font-size: 18px;
+            font-family: 'DTM-Mono', monospace;
         }
-        
-        #loading-bar {
-            width: 300px;
-            height: 20px;
-            background-color: #333;
-            border: 2px solid white;
-            margin-top: 20px;
-        }
-        
-        #loading-progress {
-            width: 0%;
-            height: 100%;
-            background-color: white;
-            transition: width 0.3s;
+        input {
+            position: absolute;
+            font-family: 'DTM-Mono', monospace;
         }
     </style>
-    <link rel="stylesheet" href="css/undertale-styles.css">
+    <!-- 1. Import Phaser Library -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div style="text-align: center;">
-            <h1>UNDERTALE Text Adventure</h1>
-            <p>Loading game assets...</p>
-            <div id="loading-bar">
-                <div id="loading-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- API Key Container -->
-    <div id="api-key-container" style="display: none;">
-        <div id="api-key-form">
-            <h2>Enter DeepSeek API Key</h2>
-            <p>This UNDERTALE text adventure requires a DeepSeek API key to function.</p>
-            <input type="password" id="api-key-input" placeholder="Enter your DeepSeek API key">
-            <button id="api-key-submit">Start Game</button>
-        </div>
-    </div>
-    
-    <!-- Inventory Container -->
-    <div id="inventory-container">
-        <div id="inventory-panel">
-            <div id="inventory-title">INVENTORY</div>
-            <div id="inventory-list"></div>
-            <div id="inventory-close">
-                <button id="inventory-close-button">Close</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Loading Indicator -->
-    <div id="loading-indicator">Loading...</div>
-    
-    <!-- Player Stats -->
-    <div id="player-stats">
-        LV: <span id="player-lv">1</span> | HP: <span id="player-hp">20</span>/<span id="player-max-hp">20</span> | G: <span id="player-gold">0</span>
-    </div>
-    
-    <!-- Inventory Button -->
-    <button id="inventory-button">INVENTORY</button>
-    
-    <!-- Game Container -->
     <div id="game-container">
-        <div id="health-container">
-            <div id="health-label">HP:</div>
-            <div id="health-bar">
-                <div id="health-fill"></div>
-            </div>
-            <div id="health-value">20/20</div>
-        </div>
-        
-        <div id="text-container"></div>
-        
-        <div id="choices-container"></div>
-        
-        <div id="input-container">
-            <input type="text" id="command-input" placeholder="Type a command...">
-            <button id="submit-button">Submit</button>
-        </div>
-        
-        <div id="battle-container">
-            <div id="battle-enemy"></div>
-            <div id="battle-box">
-                <div id="battle-soul"></div>
-            </div>
-            <div id="battle-actions">
-                <div class="battle-action" data-action="fight">FIGHT</div>
-                <div class="battle-action" data-action="act">ACT</div>
-                <div class="battle-action" data-action="item">ITEM</div>
-                <div class="battle-action" data-action="mercy">MERCY</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Game Over Screen -->
-    <div id="game-over">
-        <div>GAME OVER</div>
-        <div id="game-over-options">
-            <button id="continue-button">Continue from Save</button>
-            <button id="reset-button">Reset Game</button>
-        </div>
+        <div id="loading-text">Loading UNDERTALE Text Adventure...</div>
     </div>
 
-    <!-- Load scripts -->
-    <script>
-        // Preload function to manage asset loading
-        let assetsLoaded = 0;
-        const totalAssets = 6; // HTML, CSS, and 4 JavaScript files
-        
-        function updateLoadingProgress() {
-            assetsLoaded++;
-            const progress = (assetsLoaded / totalAssets) * 100;
-            const progressBar = document.getElementById('loading-progress');
-            if (progressBar) {
-                progressBar.style.width = `${progress}%`;
-            }
-            
-            if (assetsLoaded >= totalAssets) {
-                // All assets loaded
-                setTimeout(() => {
-                    const loadingScreen = document.getElementById('loading-screen');
-                    const apiKeyContainer = document.getElementById('api-key-container');
-                    
-                    if (loadingScreen) loadingScreen.style.display = 'none';
-                    if (apiKeyContainer) apiKeyContainer.style.display = 'flex';
-                }, 500);
-            }
-        }
-        
-        // Mark HTML as loaded
-        updateLoadingProgress();
-        
-        // Mark CSS as loaded when it completes loading
-        document.querySelector('link').onload = updateLoadingProgress;
-        
-        // Create placeholders for Undertale data objects
-        window.UNDERTALE_AREAS = {};
-        window.UNDERTALE_CHARACTERS = {};
-        window.UNDERTALE_EVENTS = {};
-        window.UNDERTALE_ITEMS = {};
-        window.UNDERTALE_PUZZLES = {};
-        window.UNDERTALE_SHOPS = {};
-        window.UNDERTALE_BULLET_PATTERNS = {};
-        
-        // Let's track script loading to ensure progress bar works
-        function trackScriptLoading() {
-            const scripts = document.querySelectorAll('script');
-            scripts.forEach(script => {
-                if (script.src && !script.hasAttribute('data-loaded')) {
-                    script.onload = function() {
-                        script.setAttribute('data-loaded', 'true');
-                        updateLoadingProgress();
-                    };
-                }
-            });
-        }
-        
-        // Call after a short delay to ensure all scripts are in the DOM
-        setTimeout(trackScriptLoading, 100);
-    </script>
-    
-<!-- Load data files first -->
-<script src="js/data/areas.js"></script>
-<script src="js/data/characters.js"></script>
-<script src="js/data/events.js"></script>
-<script src="js/data/items.js"></script>
-<script src="js/data/puzzles.js"></script>
-<script src="js/data/shops.js"></script>
-<script src="js/data/battles.js"></script>
+    <!-- ========= Game Scripts - REVISED CORRECT ORDER ========= -->
 
-<!-- Then load core game files -->
-<script src="js/api-handler.js"></script>
-<script src="js/battle-system.js"></script>
-<script src="js/game-logic.js"></script>
-<script src="js/init.js"></script>
+    <!-- 2. Load Scene Definitions -->
+    <!-- Must be loaded BEFORE config.js which uses these class names -->
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/PreloaderScene.js"></script>
+    <script src="js/scenes/ApiKeyScene.js"></script>
+    <script src="js/scenes/TitleScene.js"></script>
+    <script src="js/scenes/GameScene.js"></script>
+    <script src="js/scenes/BattleScene.js"></script>
+    <!-- Add any other scene files here -->
+
+    <!-- 3. Load Global State / Config -->
+    <!-- Defines UNDERTALE object, uses Scene classes -->
+    <script src="js/config.js"></script>
+
+    <!-- 4. Load API Client Utility -->
+    <!-- Needed by scenes -->
+    <script src="js/utils/DeepseekAPI.js"></script>
+
+    <!-- 5. Load Game Data Files -->
+    <!-- Populate UNDERTALE.gameData -->
+    <script src="js/data/areas.js"></script>
+    <script src="js/data/characters.js"></script>
+    <script src="js/data/items.js"></script>
+    <script src="js/data/events.js"></script>
+    <script src="js/data/shops.js"></script>
+    <script src="js/data/battles.js"></script>
+    <script src="js/data/puzzles.js"></script>
+    <!-- Add any other data files here -->
+
+    <!-- 6. Load Main Game Logic -->
+    <!-- Uses config object and starts the game -->
+    <script src="js/main.js"></script>
+
+    <!-- =============================================== -->
+
 </body>
 </html>
