@@ -203,5 +203,11 @@ class DeepSeekAPI {
     }
 }
 
-// Export the API handler
+// Export API functions to global scope
 window.DeepSeekAPI = DeepSeekAPI;
+window.loadGameData = async function() {
+  if (!window.apiHandler) {
+    window.apiHandler = new DeepSeekAPI(gameState.apiKey);
+  }
+  return await window.apiHandler.loadAllGameData();
+};

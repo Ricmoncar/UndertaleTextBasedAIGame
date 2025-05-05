@@ -3,23 +3,26 @@
  * This file is the entry point for the game, initializing all components and starting the game
  */
 
-// Global game data and state
-let gameData = {};
-let gameState = {
-    currentLocation: "ruins.flower_bed",
-    inventory: ["stick", "bandage"],
-    health: 20,
-    maxHealth: 20,
-    lv: 1,
-    gold: 0,
-    route: "neutral", // neutral, pacifist, genocide
-    completedEvents: [],
-    equippedWeapon: "stick",
-    equippedArmor: "bandage",
-    apiKey: null,
-    flags: {},
-    saved: null
-};
+// Check if gameState already exists, don't redeclare if it does
+if (typeof gameState === 'undefined') {
+    // Global game data and state
+    var gameData = {};
+    var gameState = {
+        currentLocation: "ruins.flower_bed",
+        inventory: ["stick", "bandage"],
+        health: 20,
+        maxHealth: 20,
+        lv: 1,
+        gold: 0,
+        route: "neutral", // neutral, pacifist, genocide
+        completedEvents: [],
+        equippedWeapon: "stick",
+        equippedArmor: "bandage",
+        apiKey: null,
+        flags: {},
+        saved: null
+    };
+}
 
 // API handler
 let apiHandler = null;
@@ -156,6 +159,43 @@ async function startGameWithAPI() {
     // Hide loading indicator
     document.getElementById('loading-indicator').style.display = 'none';
 }
+
+// Add this function to js/init.js
+async function loadGameData() {
+    try {
+      // Initialize API handler if not already done
+      if (!apiHandler) {
+        apiHandler = new DeepSeekAPI(gameState.apiKey);
+      }
+      
+      // Load game data through the API handler
+      gameData = await apiHandler.loadAllGameData();
+      
+      // If we failed to get data from API, use fallbacks
+      if (!gameData || Object.keys(gameData).length === 0) {
+        console.log("Using fallback data");
+        gameData = {
+          areas: window.UNDERTALE_AREAS || {},
+          characters: window.UNDERTALE_CHARACTERS || {},
+          events: window.UNDERTALE_EVENTS || {},
+          items: window.UNDERTALE_ITEMS || {},
+          puzzles: window.UNDERTALE_PUZZLES || {},
+          shops: window.UNDERTALE_SHOPS || {},
+          bullet_patterns: window.UNDERTALE_BULLET_PATTERNS || {}
+        };
+      }
+      
+      console.log("Game data loaded successfully");
+      return gameData;
+    } catch (error) {
+      console.error("Error loading game data:", error);
+      throw error;
+    }
+  }
+  
+  // Make sure it's globally available
+
+
 
 /**
  * Show the title screen
@@ -446,7 +486,46 @@ function updateStats() {
     playerGold.textContent = gameState.gold;
 }
 
+/**
+ * Load game data from the API
+ */
+async function loadGameData() {
+    try {
+      // Initialize API handler if not already done
+      if (!apiHandler) {
+        apiHandler = new DeepSeekAPI(gameState.apiKey);
+      }
+      
+      // Load game data through the API handler
+      gameData = await apiHandler.loadAllGameData();
+      
+      // If we failed to get data from API, use fallbacks
+      if (!gameData || Object.keys(gameData).length === 0) {
+        console.log("Using fallback data");
+        gameData = {
+          areas: window.UNDERTALE_AREAS || {},
+          characters: window.UNDERTALE_CHARACTERS || {},
+          events: window.UNDERTALE_EVENTS || {},
+          items: window.UNDERTALE_ITEMS || {},
+          puzzles: window.UNDERTALE_PUZZLES || {},
+          shops: window.UNDERTALE_SHOPS || {},
+          bullet_patterns: window.UNDERTALE_BULLET_PATTERNS || {}
+        };
+      }
+      
+      console.log("Game data loaded successfully");
+      return gameData;
+    } catch (error) {
+      console.error("Error loading game data:", error);
+      throw error;
+    }
+  }
+  
+  // Make sure it's globally available
+  window.loadGameData = loadGameData;
+
 // Expose functions to window scope
+window.loadGameData = loadGameData;
 window.gameData = gameData;
 window.gameState = gameState;
 window.typeText = typeText;

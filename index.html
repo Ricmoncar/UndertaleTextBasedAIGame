@@ -166,19 +166,19 @@
         window.UNDERTALE_BULLET_PATTERNS = {};
     </script>
     
-    <!-- Load fallback data -->
-    <script src="js/data/areas.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/characters.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/events.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/items.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/puzzles.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/shops.js" onload="updateLoadingProgress()"></script>
-    <script src="js/data/battles.js" onload="updateLoadingProgress()"></script>
-    
-    <!-- Load game scripts -->
-    <script src="js/api-handler.js"></script>
-    <script src="js/battle-system.js"></script>
-    <script src="js/game-logic.js"></script>
-    <script src="js/init.js"></script>
+<!-- Load data files first -->
+<script src="js/data/areas.js"></script>
+<script src="js/data/characters.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/data/items.js"></script>
+<script src="js/data/puzzles.js"></script>
+<script src="js/data/shops.js"></script>
+<script src="js/data/battles.js"></script>
+
+<!-- Then load core game files -->
+<script src="js/api-handler.js"></script>
+<script src="js/battle-system.js"></script>
+<script src="js/game-logic.js"></script>
+<script src="js/init.js"></script>
 </body>
 </html>

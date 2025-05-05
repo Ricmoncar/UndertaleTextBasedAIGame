@@ -3,26 +3,28 @@
  * This file contains the core implementation of the game mechanisms
  */
 
-// Game state setup
-let gameState = {
-    currentLocation: "ruins.flower_bed",
-    inventory: ["stick", "bandage"],  // Start with basic items
-    health: 20,
-    maxHealth: 20,
-    lv: 1,
-    gold: 0,
-    route: "neutral", // neutral, pacifist, genocide
-    completedEvents: [],
-    equippedWeapon: "stick",
-    equippedArmor: "bandage",
-    apiKey: null,
-    flags: {},
-    saved: {
-        location: "ruins.flower_bed",
-        health: 20
-    }
-};
-
+// Check if gameState already exists, don't redeclare if it does
+if (typeof gameState === 'undefined') {
+    // Game state setup
+    var gameState = {
+        currentLocation: "ruins.flower_bed",
+        inventory: ["stick", "bandage"],  // Start with basic items
+        health: 20,
+        maxHealth: 20,
+        lv: 1,
+        gold: 0,
+        route: "neutral", // neutral, pacifist, genocide
+        completedEvents: [],
+        equippedWeapon: "stick",
+        equippedArmor: "bandage",
+        apiKey: null,
+        flags: {},
+        saved: {
+            location: "ruins.flower_bed",
+            health: 20
+        }
+    };
+}
 // Main game initialization
 function initGame() {
     // Register UI event listeners
