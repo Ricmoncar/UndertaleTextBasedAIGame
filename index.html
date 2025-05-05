@@ -4,249 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNDERTALE Text Adventure</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="textDisplayFix.css">
-    <!-- Simplify font loading - remove preload links that might cause errors -->
+    <style>
+        /* Basic styling until CSS loads */
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        #loading-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #333;
+            border: 2px solid white;
+            margin-top: 20px;
+        }
+        
+        #loading-progress {
+            width: 0%;
+            height: 100%;
+            background-color: white;
+            transition: width 0.3s;
+        }
+    </style>
+    <link rel="stylesheet" href="css/undertale-styles.css">
 </head>
 <body>
-    <div id="game-container">
-        <!-- Title Screen -->
-        <div id="title-screen" class="screen">
-            <h1>UNDERTALE</h1>
-            <h2>Text Adventure</h2>
-            <div class="menu-options">
-                <button id="new-game-btn">New Game</button>
-                <button id="load-game-btn">Load Game</button>
-            </div>
-        </div>
-
-        <!-- Character Creation Screen -->
-        <div id="character-creation" class="screen">
-            <h2>Who are you?</h2>
-            <div class="character-form">
-                <div class="form-group">
-                    <label for="character-name">Name:</label>
-                    <input type="text" id="character-name" maxlength="6">
-                </div>
-                <button id="start-game-btn">Begin</button>
-            </div>
-        </div>
-
-        <!-- Load Game Screen -->
-        <div id="load-game" class="screen">
-            <h2>Load Game</h2>
-            <div id="save-slots">
-                <!-- Save slots will be populated dynamically -->
-                <div class="save-slot empty" data-slot="1">
-                    <p>Empty Slot 1</p>
-                </div>
-                <div class="save-slot empty" data-slot="2">
-                    <p>Empty Slot 2</p>
-                </div>
-                <div class="save-slot empty" data-slot="3">
-                    <p>Empty Slot 3</p>
-                </div>
-            </div>
-            <button id="back-to-title-btn">Back</button>
-        </div>
-
-        <!-- Main Game Screen - RESTRUCTURED -->
-        <div id="game-screen" class="screen">
-            <div id="stats-bar">
-                <div id="player-name">NAME: <span></span></div>
-                <div id="player-lv">LV: <span>1</span></div>
-                <div id="player-hp">HP: <span>20</span> / <span>20</span></div>
-            </div>
-            
-            <div id="game-area">
-                <div id="location-image"></div>
-                <div id="location-name"></div>
-                
-                <!-- Restructured text display area -->
-                <div id="game-text-container">
-                    <div id="game-text" class="scrollable-content"></div>
-                </div>
-                
-                <!-- Separate area for command results -->
-                <div id="command-result-area" class="command-display"></div>
-            </div>
-            
-            <div id="action-menu">
-                <div id="standard-actions">
-                    <button id="act-btn">ACT</button>
-                    <button id="item-btn">ITEM</button>
-                    <button id="mercy-btn">MERCY</button>
-                    <button id="menu-btn">MENU</button>
-                </div>
-                <div id="input-area">
-                    <input type="text" id="player-input" placeholder="What will you do?">
-                    <button id="submit-action">➤</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Battle Screen -->
-        <div id="battle-screen" class="screen">
-            <div id="battle-stats">
-                <div id="battle-player-name">NAME: <span></span></div>
-                <div id="battle-player-lv">LV: <span>1</span></div>
-                <div id="battle-player-hp">HP: <span>20</span> / <span>20</span></div>
-            </div>
-            
-            <div id="battle-area">
-                <div id="enemy-container">
-                    <div id="enemy-name"></div>
-                    <div id="enemy-image"></div>
-                </div>
-                
-                <!-- Use same structure for battle text as for game text -->
-                <div id="battle-text-container">
-                    <div id="battle-text" class="scrollable-content"></div>
-                </div>
-                
-                <div id="battle-box">
-                    <!-- This will contain the soul and bullet patterns -->
-                    <div id="player-soul"></div>
-                </div>
-            </div>
-            
-            <div id="battle-menu">
-                <button id="fight-btn">FIGHT</button>
-                <button id="battle-act-btn">ACT</button>
-                <button id="battle-item-btn">ITEM</button>
-                <button id="spare-btn">MERCY</button>
-            </div>
-            
-            <div id="act-menu" class="submenu">
-                <!-- Will be populated dynamically -->
-            </div>
-            
-            <div id="item-menu" class="submenu">
-                <!-- Will be populated dynamically -->
-            </div>
-            
-            <div id="mercy-menu" class="submenu">
-                <button id="spare-option">Spare</button>
-                <button id="flee-option">Flee</button>
-            </div>
-        </div>
-
-        <!-- Inventory Screen -->
-        <div id="inventory-screen" class="screen">
-            <h2>INVENTORY</h2>
-            <div id="inventory-slots">
-                <!-- Will be populated dynamically -->
-            </div>
-            <div id="item-details">
-                <h3 id="selected-item-name"></h3>
-                <p id="selected-item-description"></p>
-                <div id="item-actions">
-                    <button id="use-item">USE</button>
-                    <button id="equip-item">EQUIP</button>
-                    <button id="drop-item">DROP</button>
-                </div>
-            </div>
-            <button id="close-inventory">CLOSE</button>
-        </div>
-
-        <!-- Game Menu Screen -->
-        <div id="menu-screen" class="screen">
-            <h2>MENU</h2>
-            <div class="menu-options">
-                <button id="save-game-btn">SAVE</button>
-                <button id="load-menu-btn">LOAD</button>
-                <button id="settings-btn">SETTINGS</button>
-                <button id="return-to-game-btn">RETURN</button>
-                <button id="quit-to-title-btn">QUIT</button>
-            </div>
-        </div>
-        
-        <!-- Save Game Screen -->
-        <div id="save-screen" class="screen">
-            <h2>SAVE GAME</h2>
-            <div id="save-game-slots">
-                <!-- Will be populated dynamically -->
-                <div class="save-slot" data-slot="1">
-                    <p>Slot 1: <span class="save-info"></span></p>
-                </div>
-                <div class="save-slot" data-slot="2">
-                    <p>Slot 2: <span class="save-info"></span></p>
-                </div>
-                <div class="save-slot" data-slot="3">
-                    <p>Slot 3: <span class="save-info"></span></p>
-                </div>
-            </div>
-            <button id="back-to-menu-btn">BACK</button>
-        </div>
-        
-        <!-- Overlay for Save Points -->
-        <div id="save-point-overlay" class="overlay">
-            <div class="save-point-container">
-                <p id="save-location-text"></p>
-                <p>* The sight of the underground fills you with DETERMINATION.</p>
-                <div class="save-options">
-                    <button id="save-game-point">SAVE</button>
-                    <button id="return-game-point">RETURN</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Add new overlay for help text -->
-        <div id="help-overlay" class="overlay">
-            <div class="help-container">
-                <h3>Available Commands</h3>
-                <div id="help-text" class="scrollable-content">
-                    <p>- north, n, up: Move north/up</p>
-                    <p>- south, s, down: Move south/down</p>
-                    <p>- east, e, right: Move east/right</p>
-                    <p>- west, w, left: Move west/left</p>
-                    <p>- forward, f: Move forward</p>
-                    <p>- back, b: Move back</p>
-                    <p>- look, examine: Look around</p>
-                    <p>- inventory, i: Show inventory</p>
-                    <p>- use [item]: Use an item</p>
-                    <p>- talk [character]: Talk to a character</p>
-                    <p>- help: Show this help text</p>
-                </div>
-                <button id="close-help">Close</button>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div style="text-align: center;">
+            <h1>UNDERTALE Text Adventure</h1>
+            <p>Loading game assets...</p>
+            <div id="loading-bar">
+                <div id="loading-progress"></div>
             </div>
         </div>
     </div>
 
-    <!-- Footer with AI integration info -->
-    <div id="footer">
-        <p>This UNDERTALE Text Adventure uses AI to enhance character dialogue.</p>
-        <p>Powered by <a href="https://deepseek.ai" target="_blank">DeepSeek AI</a> | <a href="#" id="ai-settings-link">Configure AI Settings</a></p>
-        <p>Original game UNDERTALE by Toby Fox | Text Adventure Adaptation</p>
+    <!-- API Key Container -->
+    <div id="api-key-container" style="display: none;">
+        <div id="api-key-form">
+            <h2>Enter DeepSeek API Key</h2>
+            <p>This UNDERTALE text adventure requires a DeepSeek API key to function.</p>
+            <input type="password" id="api-key-input" placeholder="Enter your DeepSeek API key">
+            <button id="api-key-submit">Start Game</button>
+        </div>
     </div>
-
-    <!-- Scripts -->
-    <!-- Load scripts in the correct order -->
-    <script src="js/data/areas.js"></script>
-    <script src="js/data/characters.js"></script>
-    <script src="js/data/items.js"></script>
-    <script src="js/data/battles.js"></script>
-    <script src="js/data/events.js"></script>
-    <script src="js/data/shops.js"></script>
-    <script src="js/data/puzzles.js"></script>
-    <script src="js/data.js"></script>
-
-    <!-- Load functional files after data is loaded -->
-    <script src="js/game.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/inventory.js"></script>
-    <script src="js/saveload.js"></script>
-    <script src="js/battle.js"></script>
-    <script src="js/resourceFallbacks.js"></script>
-    <script src="js/textAnimation.js"></script>
     
-    <!-- Fix Scripts -->
-    <script src="js/fixes/fontLoader.js"></script>
-    <script src="js/fixes/uiFixes.js"></script>
-    <script src="js/fixes/integrationFixes.js"></script>
-    <script src="js/fixes.js"></script>
-    <script src="js/textDisplayFix.js"></script>
-    <script src="js/simpleTextFix.js"></script>
+    <!-- Inventory Container -->
+    <div id="inventory-container">
+        <div id="inventory-panel">
+            <div id="inventory-title">INVENTORY</div>
+            <div id="inventory-list"></div>
+            <div id="inventory-close">
+                <button id="inventory-close-button">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loading-indicator">Loading...</div>
+    
+    <!-- Player Stats -->
+    <div id="player-stats">
+        LV: <span id="player-lv">1</span> | HP: <span id="player-hp">20</span>/<span id="player-max-hp">20</span> | G: <span id="player-gold">0</span>
+    </div>
+    
+    <!-- Inventory Button -->
+    <button id="inventory-button">INVENTORY</button>
+    
+    <!-- Game Container -->
+    <div id="game-container">
+        <div id="health-container">
+            <div id="health-label">HP:</div>
+            <div id="health-bar">
+                <div id="health-fill"></div>
+            </div>
+            <div id="health-value">20/20</div>
+        </div>
+        
+        <div id="text-container"></div>
+        
+        <div id="choices-container"></div>
+        
+        <div id="input-container">
+            <input type="text" id="command-input" placeholder="Type a command...">
+            <button id="submit-button">Submit</button>
+        </div>
+        
+        <div id="battle-container">
+            <div id="battle-enemy"></div>
+            <div id="battle-box">
+                <div id="battle-soul"></div>
+            </div>
+            <div id="battle-actions">
+                <div class="battle-action" data-action="fight">FIGHT</div>
+                <div class="battle-action" data-action="act">ACT</div>
+                <div class="battle-action" data-action="item">ITEM</div>
+                <div class="battle-action" data-action="mercy">MERCY</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Over Screen -->
+    <div id="game-over">
+        <div>GAME OVER</div>
+        <div id="game-over-options">
+            <button id="continue-button">Continue from Save</button>
+            <button id="reset-button">Reset Game</button>
+        </div>
+    </div>
+
+    <!-- Load scripts -->
+    <script>
+        // Preload function to manage asset loading
+        let assetsLoaded = 0;
+        const totalAssets = 6; // HTML, CSS, and 4 JavaScript files
+        
+        function updateLoadingProgress() {
+            assetsLoaded++;
+            const progress = (assetsLoaded / totalAssets) * 100;
+            document.getElementById('loading-progress').style.width = `${progress}%`;
+            
+            if (assetsLoaded >= totalAssets) {
+                // All assets loaded
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('api-key-container').style.display = 'flex';
+                }, 500);
+            }
+        }
+        
+        // Mark HTML as loaded
+        updateLoadingProgress();
+        
+        // Mark CSS as loaded
+        document.querySelector('link').onload = updateLoadingProgress;
+        
+        // Create placeholders for Undertale data objects
+        window.UNDERTALE_AREAS = {};
+        window.UNDERTALE_CHARACTERS = {};
+        window.UNDERTALE_EVENTS = {};
+        window.UNDERTALE_ITEMS = {};
+        window.UNDERTALE_PUZZLES = {};
+        window.UNDERTALE_SHOPS = {};
+        window.UNDERTALE_BULLET_PATTERNS = {};
+    </script>
+    
+    <!-- Load fallback data -->
+    <script src="js/data/areas.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/characters.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/events.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/items.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/puzzles.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/shops.js" onload="updateLoadingProgress()"></script>
+    <script src="js/data/battles.js" onload="updateLoadingProgress()"></script>
+    
+    <!-- Load game scripts -->
+    <script src="js/api-handler.js"></script>
+    <script src="js/battle-system.js"></script>
+    <script src="js/game-logic.js"></script>
+    <script src="js/init.js"></script>
 </body>
 </html>

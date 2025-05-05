@@ -1,0 +1,570 @@
+/* 
+ * UNDERTALE Text Adventure Game - CSS Styles
+ * This file contains all the styling for the Undertale text game
+ */
+
+/* Font Face Declarations */
+@font-face {
+    font-family: 'DTM-Mono';
+    src: url('fonts/DTM-Mono.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DTM-Sans';
+    src: url('fonts/DTM-Sans.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'DTM-Mono', monospace;
+    line-height: 1.5;
+    transition: background-color 1s;
+}
+
+/* Game Container */
+#game-container {
+    width: 800px;
+    max-width: 95vw;
+    height: 80vh;
+    margin: 20px auto;
+    border: 4px solid #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 1s;
+}
+
+/* Text Container */
+#text-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 18px;
+    white-space: pre-wrap;
+    scrollbar-width: thin;
+    scrollbar-color: #fff #000;
+}
+
+#text-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#text-container::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+#text-container::-webkit-scrollbar-track {
+    background-color: #000;
+}
+
+/* Dialog/UI Elements */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.choice-button {
+    background-color: #000;
+    color: #ff0;
+    border: 2px solid #ff0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.choice-button:hover {
+    background-color: #333;
+    transform: scale(1.02);
+}
+
+.choice-button:before {
+    content: "* ";
+}
+
+/* Command Input */
+#input-container {
+    display: flex;
+    margin-top: auto;
+}
+
+#command-input {
+    flex-grow: 1;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+}
+
+#submit-button {
+    margin-left: 10px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#submit-button:hover {
+    background-color: #ccc;
+}
+
+/* Health Display */
+#health-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#health-label {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+#health-bar {
+    width: 200px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#health-fill {
+    height: 100%;
+    background-color: #f00;
+    width: 100%;
+    transition: width 0.3s;
+}
+
+#health-value {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+/* Player Stats */
+#player-stats {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 16px;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Inventory */
+#inventory-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+#inventory-button:hover {
+    background-color: #333;
+}
+
+#inventory-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#inventory-panel {
+    background-color: #000;
+    width: 600px;
+    max-width: 90vw;
+    max-height: 80vh;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#inventory-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #ff0;
+}
+
+#inventory-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.inventory-item {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.inventory-item:hover {
+    background-color: #333;
+    border-color: #ff0;
+    color: #ff0;
+}
+
+#inventory-close {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#inventory-close-button {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* API Key Form */
+#api-key-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+#api-key-form {
+    background-color: #000;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 500px;
+    max-width: 90vw;
+    text-align: center;
+}
+
+#api-key-form h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #ff0;
+}
+
+#api-key-form p {
+    margin-bottom: 20px;
+}
+
+#api-key-input {
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#api-key-submit {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Loading Indicator */
+#loading-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 150;
+}
+
+/* Battle UI */
+#battle-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    z-index: 50;
+}
+
+#battle-enemy {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.enemy-image {
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+#battle-box {
+    width: 400px;
+    height: 150px;
+    border: 4px solid #fff;
+    position: relative;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+#battle-soul {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #f00;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: 55;
+}
+
+.battle-bullet {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
+
+#battle-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.battle-action {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 18px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.battle-action:hover {
+    background-color: #333;
+    color: #ff0;
+    border-color: #ff0;
+}
+
+#act-options, #mercy-options {
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.act-option, .mercy-option {
+    padding: 8px 15px;
+    background-color: #000;
+    color: #ff0;
+    border: 2px solid #ff0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 16px;
+}
+
+/* Soul animations */
+@keyframes soul-pulse {
+    0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
+    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+}
+
+/* Dialog animations */
+.dialog-character {
+    animation: text-fade-in 0.5s;
+}
+
+@keyframes text-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Area-specific styles */
+.ruins-area {
+    background-color: #500057;
+}
+
+.snowdin-area {
+    background-color: #000030;
+}
+
+.waterfall-area {
+    background-color: #000057;
+}
+
+.hotland-area {
+    background-color: #570000;
+}
+
+.core-area {
+    background-color: #003050;
+}
+
+.new-home-area {
+    background-color: #303030;
+}
+
+/* Additional UI Elements */
+.soul {
+    width: 16px;
+    height: 16px;
+    background-color: #f00;
+    transform: rotate(45deg);
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* Animations for transitions */
+@keyframes screen-fade {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.screen-transition {
+    animation: screen-fade 1s;
+}
+
+/* Game over screen */
+#game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    color: #f00;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+    font-size: 48px;
+}
+
+#game-over-options {
+    margin-top: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.game-over-option {
+    padding: 15px 30px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    font-family: 'DTM-Mono', monospace;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #game-container {
+        width: 95vw;
+        height: 85vh;
+        padding: 10px;
+    }
+    
+    #text-container, #command-input {
+        font-size: 16px;
+    }
+    
+    #battle-box {
+        width: 300px;
+        height: 120px;
+    }
+    
+    #inventory-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .battle-action {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+}
